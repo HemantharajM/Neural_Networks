@@ -49,7 +49,7 @@ W1_velocity = zeros(hidden1_node, input_node);
 W2_velocity = zeros(output_node, hidden1_node + 1);
 
 momentum = 0.9;
-for j=1:250
+for j=1:1000
 	Delta2 = zeros(output_node,hidden1_node + 1);
 	Delta1 = zeros(hidden1_node,input_node);
 	for i=1:m
@@ -79,9 +79,9 @@ end
 total_no = 0;
 correct_no = 0;
 
-Test_data(:,1:4) = (Test_data(:,1:4) - mean_X) ./ std_X;
+test_data(:,1:4) = (Test_data(:,1:4) - mean_X) ./ std_X;
 for i =1:15
-	a1 = [1 Test_data(i,1:4)]';
+	a1 = [1 test_data(i,1:4)]';
 	z2 = W1 * a1;
 	a2 = sigmoid(z2);
 	a2 = [1;a2];
@@ -102,6 +102,8 @@ for i =1:15
 		correct_no = correct_no + 1;
 	end
 	total_no = total_no + 1;
+
+	fprintf('For the data %f %f %f %f original output is %d and predicted output is %f %f %f\n', Test_data(i,1:4), Test_data(i,5), a3'); 
 end
 
 fprintf('Prediction accuracy is %f\n', (correct_no / total_no) * 100); 

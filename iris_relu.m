@@ -45,11 +45,7 @@ hidden1_node = 5;
 W1 = rand(hidden1_node,input_node);
 W2 = rand(output_node,hidden1_node+1);
 
-W1_velocity = zeros(hidden1_node, input_node);
-W2_velocity = zeros(output_node, hidden1_node + 1);
-
-momentum = 0.2;
-for j=1:1000
+for j=1:5000
 	Delta2 = zeros(output_node,hidden1_node + 1);
 	Delta1 = zeros(hidden1_node,input_node);
 	for i=1:m
@@ -69,10 +65,8 @@ for j=1:1000
 
 	end
 
-	W1_velocity = W1_velocity * momentum - (0.01) .* Delta1;
-	W2_velocity = W2_velocity * momentum - (0.01) .* Delta2;
-	W1 = W1 + W1_velocity;
-	W2 = W2 + W2_velocity;
+	W1 = W1 - (0.001) .* Delta1;
+	W2 = W2 - (0.001) .* Delta2;
 end
 
 %check the prediction accuracy from the Test data
@@ -80,20 +74,22 @@ end
 total_no = 0;
 correct_no = 0;
 
-Test_data(:,1:4) = (Test_data(:,1:4) - mean_X) ./ std_X;
+test_data(:,1:4) = (Test_data(:,1:4) - mean_X) ./ std_X;
 for i =1:15
-	a1 = [1 Test_data(i,1:4)]';
+	a1 = [1 test_data(i,1:4)]';
 	z2 = W1 * a1;
 	a2 = max(0,z2);
 	a2 = [1;a2];
 	z3 = W2 * a2;
 	a3 = max(0,z3);
-
+	
+	Test_data(i,5);
 	[val, indices] = max(a3);	
 	if Test_data(i,5)  == indices 
 		correct_no = correct_no + 1;
 	end
 	total_no = total_no + 1;
+	fprintf('For the data %f %f %f %f original output is %f and predicted output is %f %f %f \n', Test_data(i,1:4), Test_data(i,5), a3');
 end
 
 fprintf('Prediction accuracy is %f\n', (correct_no / total_no) * 100); 

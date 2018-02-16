@@ -81,9 +81,9 @@ end
 total_no = 0;
 correct_no = 0;
 
-Test_data(:,1:4) = (Test_data(:,1:4) - mean_X) ./ std_X;
+test_data(:,1:4) = (Test_data(:,1:4) - mean_X) ./ std_X;
 for i =1:15
-	a1 = [1 Test_data(i,1:4)]';
+	a1 = [1 test_data(i,1:4)]';
 	z2 = W1 * a1;
 	a2 = max(a*z2,z2);
 	a2 = [1;a2];
@@ -95,6 +95,7 @@ for i =1:15
 		correct_no = correct_no + 1;
 	end
 	total_no = total_no + 1;
+	fprintf('For the data %f %f %f %f original output is %f and predicted output is %f %f %f\n', Test_data(i,1:4), Test_data(i,5), a3');
 end
 
 fprintf('Prediction accuracy is %f\n', (correct_no / total_no) * 100); 
